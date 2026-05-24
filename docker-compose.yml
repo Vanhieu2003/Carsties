@@ -7,5 +7,15 @@ services:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql
+  mongodb:
+    image: mongo:latest
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=admin
+      - MONGO_INITDB_ROOT_PASSWORD=mongopw
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongo_data:/var/lib/mongodb/data
 volumes:
   pgdata:
+  mongo_data:
