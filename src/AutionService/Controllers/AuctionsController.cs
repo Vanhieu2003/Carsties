@@ -8,6 +8,7 @@ using MassTransit;
 using MassTransit.Testing;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System;
 
 namespace AutionService.Controllers
 {
@@ -61,11 +62,12 @@ namespace AutionService.Controllers
 
             _context.Auctions.Add(auction);
 
-            var result = await _context.SaveChangesAsync() > 0;
 
             var newAuction = _mapper.Map<AuctionDto>(auction);
             
             await _publishEndpoint.Publish(_mapper.Map<AuctionCreated>(newAuction));
+
+            var result = await _context.SaveChangesAsync() > 0;
 
             if (!result) return BadRequest("Could not save changes to the db");
 
@@ -89,6 +91,8 @@ namespace AutionService.Controllers
             aution.Item.Mileage = dto.Mileage ?? aution.Item.Mileage;
             aution.Item.Year = dto.Year ?? aution.Item.Year;
 
+            await _publishEndpoint.Publish(_mapper.Map<AuctionUpdated>(aution));
+
             var result = await _context.SaveChangesAsync() > 0;
 
             if (result) return Ok();
@@ -101,6 +105,8 @@ namespace AutionService.Controllers
         public async Task<ActionResult> DeleteAuction(Guid id)
         {
             var auction = await _context.Auctions.FindAsync(id);
+
+            await _publishEndpoint.Publish(_mapper.Map<AuctionDeleted>(auction));
 
             if (auction == null) return NotFound();
 

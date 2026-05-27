@@ -11,7 +11,7 @@ namespace SearchService.Controllers
     public class SearchController : ControllerBase
     {
         [HttpGet]
-        public async Task<ActionResult<List<Item>>> SearchItems(SearchParams searchParams)
+        public async Task<ActionResult<List<Item>>> SearchItems([FromQuery] SearchParams searchParams)
         {
             var query = DB.PagedSearch<Item,Item>();
 
