@@ -1,6 +1,7 @@
 using Duende.IdentityServer;
 using IdentityService.Data;
 using IdentityService.Models;
+using IdentityService.Service;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.IdentityModel.Tokens;
@@ -75,6 +76,7 @@ namespace IdentityService
                 .AddInMemoryApiScopes(Config.ApiScopes)
                 .AddInMemoryClients(Config.Clients)
                 .AddAspNetIdentity<ApplicationUser>()
+                .AddProfileService<CustomProfileService>()
                 .AddLicenseSummary();
 
             builder.Services.ConfigureApplicationCookie(options => 
