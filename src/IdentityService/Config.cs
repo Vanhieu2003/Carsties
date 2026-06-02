@@ -32,7 +32,20 @@ namespace IdentityService
 
                     AllowedScopes = { "openid","profile", "auctionApp" }
                 },
- 
+
+                new Client
+                {
+                    ClientId = "nextApp",
+                    ClientName = "nextApp",
+                    AllowedGrantTypes = GrantTypes.CodeAndClientCredentials,
+                    RequirePkce = true,
+                    ClientSecrets = { new Secret("secret".Sha256()) },
+                    RedirectUris = {"http://localhost:3000/api/auth/callback/id-server"},
+                    AllowOfflineAccess = true,
+                    AllowedScopes = { "openid","profile", "auctionApp" },
+                    AccessTokenLifetime = 3600 * 24 * 30
+                },
+
             };
     }
 }
